@@ -125,68 +125,42 @@ List of files to edit according to our BigQuery connection.
     /etc/simba/odbcinst.ini
     /etc/simba/simba.googlebigqueryodbc.ini
     /etc/simba/odbc.ini
-
+---
 #### 3.3.1 changing the file: `/etc/simba/odbcinst.ini`  
 ***original file***
-```diff
-# To use this INI file, replace <INSTALLDIR> with the
-# directory the tarball was extracted to.
+[odbcinst.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/odbcinst.ini)
 
-[ODBC Drivers]
-Simba ODBC Driver for Google BigQuery 32-bit=Installed
-Simba ODBC Driver for Google BigQuery 64-bit=Installed
-
-[Simba ODBC Driver for Google BigQuery 32-bit]
-Description=Simba ODBC Driver for Google BigQuery(32-bit)
-Driver=<INSTALLDIR>/lib/libgooglebigqueryodbc_sb32.so
-
-[Simba ODBC Driver for Google BigQuery 64-bit]
-Description=Simba ODBC Driver for Google BigQuery(64-bit)
-Driver=<INSTALLDIR>/lib/libgooglebigqueryodbc_sb64.so
-
-## The option below is for using unixODBC when compiled with -DSQL_WCHART_CONVERT.
-## Execute 'odbc_config --cflags' to determine if you need to uncomment it.
-# IconvEncoding=UCS-4LE
-```
+--
 ***Edited file.***
+[odbcinst.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/odbcinst.ini)
 >Since we will work only with 64bit, I have deleted the 32bit settings and changed the name of the driver as the name was so big and not adequate to the driver name in the other conf file.
-```diff
-[ODBC Drivers]
-Google BigQuery 64-bit=Installed
-
-[Google BigQuery 64-bit]
-Description=Simba ODBC Driver for Google BigQuery(64-bit)
-Driver=/etc/simba/driver/lib/libgooglebigqueryodbc_sb64.so
-```
+---
 #### 3.3.2 changing the file:`/etc/simba/simba.googlebigqueryodbc.ini`
 ***original file***
-```diff
-# To use this INI file, replace <INSTALLDIR> with the
-# directory the tarball was extracted to.
+[googlebigqueryodbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/simba.googlebigqueryodbc.ini)
 
-[Driver]
-DriverManagerEncoding=UTF-32
-ErrorMessagesPath=<INSTALLDIR>/ErrorMessages
-LogLevel=0
-LogPath=
-
-## - Note that the path to your ODBC Driver Manager must be specified in LD_LIBRARY_PATH.
-```
+--
+***edited file***
+[googlebigqueryodbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/simba.googlebigqueryodbc.ini)
+> I have replaced the INSTALLDIR by our ODBC simba installation repository
+---
+#### 3.3.3 changing the file:`/etc/simba/odbc.ini`
+***original file***
+[odbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/odbc.ini)
 
 ***edited file***
-> I have just replaced the INSTALLDIR by our ODBC simba installation repository
-```diff
-# To use this INI file, replace <INSTALLDIR> with the
-# directory the tarball was extracted to.
+[odbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/odbc.ini)
+you can use directly this file, and change what I have mentioned in the note section down below.
+In this file, you need to focus on editing these parameters:
+`Catalog=` : Add the Project ID (Your BigQuery Project ID)
 
-[Driver]
-DriverManagerEncoding=UTF-32
-ErrorMessagesPath=/etc/simba/ErrorMessages
-LogLevel=0
-LogPath=
-
-## - Note that the path to your ODBC Driver Manager must be specified in LD_LIBRARY_PATH.
-```
-#### 3.3.3 changing the file:`/etc/simba/simba.googlebigqueryodbc.ini`
-***original file***
-
+ 1. If you are going to use the service account, edit these parameters:
+    `OAuthMechanism=0` : ensure that it is equal to 0
+	`Email=` : Add the email of your service account
+	`KeyFilePath=`: the path to your service account if you have changed its location.
+	
+ 2. In case you want to use the user account, edit these parameters:
+	 `Email=` : comment this line
+	 `KeyFilePath=` comment this line
+	 `OAuthMechanism=1` ensure that it is equal to 1
+	 

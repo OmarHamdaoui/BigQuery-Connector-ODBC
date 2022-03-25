@@ -131,20 +131,20 @@ List of files to edit according to our BigQuery connection.
     /etc/simba/simba.googlebigqueryodbc.ini
     /etc/simba/odbc.ini
 ---
-#### 3.3.1 changing the file: `/etc/simba/odbcinst.ini`  
+#### 3.3.1 changing the file: `/etc/simba/setup/odbcinst.ini`  
 ***original file:*** [odbcinst.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/odbcinst.ini)
 
 ***Edited file:*** [odbcinst.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/odbcinst.ini)
 >Since we will work only with 64bit, I have deleted the 32bit settings and changed the name of the driver as the name was so big and not adequate to the driver name in the other conf file.
 ---
-#### 3.3.2 changing the file:`/etc/simba/simba.googlebigqueryodbc.ini`
+#### 3.3.2 changing the file:`/etc/simba/setup/simba.googlebigqueryodbc.ini`
 ***original file:*** [simba.googlebigqueryodbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/simba.googlebigqueryodbc.ini)
 
 ***edited file:*** [simba.googlebigqueryodbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/simba.googlebigqueryodbc.ini)
 
 > I have replaced the INSTALLDIR by our ODBC simba installation repository
 ---
-#### 3.3.3 changing the file:`/etc/simba/odbc.ini` (For service Account Usage)
+#### 3.3.3 changing the file:`/etc/simba/setup/odbc.ini` (For service Account Usage)
 > This conf is for service account usage
 > This a very important file, I have kept only the 64bit conf in my edited file.
 
@@ -160,7 +160,7 @@ Since you are going to use the service account, ensure or edit these parameters:
 	`Email=` : Add the email of your service account
 	`KeyFilePath=`: the path to your service account if you have changed its location.
 
-#### 3.3.4 changing the file:`/etc/simba/odbc.ini` (For User Account Usage) *- Skip if you will use the Service account.*
+#### 3.3.4 changing the file:`/etc/simba/setup/odbc.ini` (For User Account Usage) *- Skip if you will use the Service account.*
 > This conf is for user account usage
 > The user account usage is not recomanded by google, becose the dev depend on your account.
 

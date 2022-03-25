@@ -59,13 +59,17 @@ deleting the tar files (64bit) and the setup used on **2.1** & **2.2**
 
 	rm -f /etc/simba/SimbaODBCDriverforGoogleBigQuery* SimbaODBCDriverforGoogleBigQuery_2.4.5.1014-Linux.tar.gz
 ### 2.4 Upload the service account key
-If you are going to use the service account, you need to deposit it in the following repository, it must be just like that
+If you are going to use the service account, you need to deposit it in the following repository, it must be here
 
 	/etc/simba/setup/bq-service-account.json
 ### 2.5 Structure
 The structure should look like that:
 
 	/etc/simba/
+	├── docs
+	    ├── OEM ODBC Driver Installation Instructions.pdf
+	    ├── release-notes.txt
+	    └── Simba Google BigQuery ODBC Connector Install and Configuration Guide.pdf
 	├── driver
 	│   ├── ErrorMessages
 	│   │   └── en-US
@@ -99,6 +103,7 @@ Giving rights to `/etc/simba` repository to be used by another user change `user
 	odbcinst -q -d
 
 *the output should look like that*
+if you an error on your output like `odbcinst: SQLGetPrivateProfileString failed with Unable to find component name.` don't debug it, we will use our proper configuration in this section.
 ```diff
 [PostgreSQL ANSI]
 [MySQL]
@@ -127,21 +132,15 @@ List of files to edit according to our BigQuery connection.
     /etc/simba/odbc.ini
 ---
 #### 3.3.1 changing the file: `/etc/simba/odbcinst.ini`  
-***original file***
-[odbcinst.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/odbcinst.ini)
+***original file:*** [odbcinst.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/odbcinst.ini)
 
---
-***Edited file.***
-[odbcinst.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/odbcinst.ini)
+***Edited file:*** [odbcinst.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/odbcinst.ini)
 >Since we will work only with 64bit, I have deleted the 32bit settings and changed the name of the driver as the name was so big and not adequate to the driver name in the other conf file.
 ---
 #### 3.3.2 changing the file:`/etc/simba/simba.googlebigqueryodbc.ini`
-***original file***
-[simba.googlebigqueryodbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/simba.googlebigqueryodbc.ini)
+***original file:*** [simba.googlebigqueryodbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/simba.googlebigqueryodbc.ini)
 
---
-***edited file***
-[simba.googlebigqueryodbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/simba.googlebigqueryodbc.ini)
+***edited file:*** [simba.googlebigqueryodbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/simba.googlebigqueryodbc.ini)
 
 > I have replaced the INSTALLDIR by our ODBC simba installation repository
 ---
@@ -149,11 +148,9 @@ List of files to edit according to our BigQuery connection.
 > This conf is for service account usage
 > This a very important file, I have kept only the 64bit conf in my edited file.
 
-***original file***
-[odbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/odbc.ini)
+***original file:*** [odbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/odbc.ini)
 
-***edited file***
-[odbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/odbc.ini)
+***edited file:*** [odbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/odbc.ini)
 you can use directly this file, and change what I have mentioned in the note section down below.
 In this file, you need to focus on editing these parameters:
 `Catalog=` : Add the Project ID (Your BigQuery Project ID)
@@ -167,17 +164,17 @@ Since you are going to use the service account, ensure or edit these parameters:
 > This conf is for user account usage
 > The user account usage is not recomanded by google, becose the dev depend on your account.
 
-Open this link:
-
- 1. [Google BigQuery Token](https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/bigquery&response_type=code&redirect_uri=urn:ietf:wg:oauth:2.0:oob&client_id=977385342095.apps.googleusercontent.com&hl=en&from_login=1&as=76356ac9e8ce640b&pli=1&authuser=0)
+ 1. Open this link: [Google BigQuery Token](https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/bigquery&response_type=code&redirect_uri=urn:ietf:wg:oauth:2.0:oob&client_id=977385342095.apps.googleusercontent.com&hl=en&from_login=1&as=76356ac9e8ce640b&pli=1&authuser=0)
  2. Select your Google account
- 3. Allow BigQuery to access your Google Account <img src="https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/tmp/1.png?raw=true" width="300">
- 4. .Scroll and copy the "Authorization code" <img src="https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/tmp/2.png?raw=true" width="300">
- 5. Execute the script in your machine :
+ 3. Allow BigQuery to access your Google Account
+  <img src="https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/tmp/1.png?raw=true" width="300">
+ 4. Scroll and copy the "Authorization code"
+ <img src="https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/tmp/2.png?raw=true" width="300">
+ 6. Execute the script in your machine :
 	    sh /etc/simba/Tools/get_refresh_token.sh "token you have copied"
 	copy the result of the script without taking `refresh_token :`
- 6. open the: `/etc/simba/odbc.ini`
- 7. `#RefreshToken=`: uncomment this line and past your refresh_token
+ 7. open the: `/etc/simba/odbc.ini`
+ 8. `#RefreshToken=`: uncomment this line and past your refresh_token
 	`Email=` : comment this line
 	`KeyFilePath=` comment this line 	
 	`OAuthMechanism=1` ensure that it is equal to 1

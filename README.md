@@ -173,10 +173,10 @@ Since you are going to use the service account, ensure or edit these parameters:
  4. Scroll and copy the "Authorization code"
  <img src="https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/tmp/2.png?raw=true" width="300">
  5. Execute the script in your machine:
+ After executing the command below, copy the result of the script without taking `refresh_token :`
  
 		 sh /etc/simba/Tools/get_refresh_token.sh "token you have copied"
 
-Copy the result of the script without taking `refresh_token :`
  6. Open the file: `/etc/simba/odbc.ini`
     Since you are going to use the user account, ensure or edit these parameters:
     `#RefreshToken=`: uncomment this line and past your refresh_token

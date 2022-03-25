@@ -175,9 +175,9 @@ Since you are going to use the service account, ensure or edit these parameters:
  5. Execute the script in your machine:
  
 		 sh /etc/simba/Tools/get_refresh_token.sh "token you have copied"
-		 
-	copy the result of the script without taking `refresh_token :`
- 7. Open the file: `/etc/simba/odbc.ini`
+
+Copy the result of the script without taking `refresh_token :`
+ 6. Open the file: `/etc/simba/odbc.ini`
     Since you are going to use the user account, ensure or edit these parameters:
     `#RefreshToken=`: uncomment this line and past your refresh_token
 	`Email=` : comment this line

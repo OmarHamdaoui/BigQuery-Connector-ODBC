@@ -100,7 +100,7 @@ Giving rights to `/etc/simba` repository to be used by another user change `user
 ## 3 Config ODBC
 ### 3.1 Listing ODBC default installed drivers
 
-	odbcinst -q -d
+	odbcinst -q -s
 
 *the output should look like that*
 if you an error on your output like `odbcinst: SQLGetPrivateProfileString failed with Unable to find component name.` don't debug it, we will use our proper configuration in this section.
@@ -151,6 +151,7 @@ List of files to edit according to our BigQuery connection.
 ***original file:*** [odbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/odbc.ini)
 
 ***edited file:*** [odbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/odbc.ini)
+
 you can use directly this file, and change what I have mentioned in the note section down below.
 In this file, you need to focus on editing these parameters:
 `Catalog=` : Add the Project ID (Your BigQuery Project ID)
@@ -168,13 +169,14 @@ Since you are going to use the service account, ensure or edit these parameters:
  2. Select your Google account
  3. Allow BigQuery to access your Google Account
   <img src="https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/tmp/1.png?raw=true" width="300">
+  
  4. Scroll and copy the "Authorization code"
  <img src="https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/tmp/2.png?raw=true" width="300">
- 6. Execute the script in your machine :
+ 5. Execute the script in your machine :
 	    sh /etc/simba/Tools/get_refresh_token.sh "token you have copied"
 	copy the result of the script without taking `refresh_token :`
- 7. open the: `/etc/simba/odbc.ini`
- 8. `#RefreshToken=`: uncomment this line and past your refresh_token
+ 6. open the: `/etc/simba/odbc.ini`
+ 7. `#RefreshToken=`: uncomment this line and past your refresh_token
 	`Email=` : comment this line
 	`KeyFilePath=` comment this line 	
 	`OAuthMechanism=1` ensure that it is equal to 1
@@ -194,12 +196,40 @@ Checking if the DSN (Data Source Name) has been installed successfully:
 	odbcinst -q -s
 the result should be like that
 
-	[ODBC Drivers]
+	[ODBC]
 	[Google BigQuery 64-bit]
 	
 ### 4.2 Driver Check
 
-	odbcinst -q -d
+	odbcinst -j
 
 the result should be like that
 
+	unixODBC 2.3.6
+	DRIVERS............: /etc/simba/setup/odbcinst.ini
+	SYSTEM DATA SOURCES: /etc/odbc.ini
+	FILE DATA SOURCES..: /etc/ODBCDataSources
+	USER DATA SOURCES..: /etc/simba/setup/odbc.ini
+	SQLULEN Size.......: 8
+	SQLLEN Size........: 8
+	SQLSETPOSIROW Size.: 8
+
+We can see that our driver points on the right configuration.
+### Connecting to BigQuery
+repeat the section 4.1 to get the Data source name, and connect using isql, like the command below:
+
+	isql 'Google BigQuery 64-bit'
+If everything went well the previous command will show the following message:
+
+	+---------------------------------------+
+	| Connected!                            |
+	|                                       |
+	| sql-statement                         |
+	| help [tablename]                      |
+	| quit                                  |
+	|                                       |
+	+---------------------------------------+
+	SQL>
+Now we can test a query:
+
+	SQL> select name from element.fruits limit 402;

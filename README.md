@@ -102,8 +102,8 @@ Giving rights to `/etc/simba` repository to be used by another user change `user
 
 	odbcinst -q -s
 
-*the output should look like that*
-if you an error on your output like `odbcinst: SQLGetPrivateProfileString failed with Unable to find component name.` don't debug it, we will use our proper configuration in this section.
+If you have an error on your output like `odbcinst: SQLGetPrivateProfileString failed with Unable to find component name.` don't debug it, we will use our proper configuration in this section.
+*The output should look like that*
 ```diff
 [PostgreSQL ANSI]
 [MySQL]
@@ -146,13 +146,13 @@ List of files to edit according to our BigQuery connection.
 ---
 #### 3.3.3 changing the file:`/etc/simba/setup/odbc.ini` (For service Account Usage)
 > This conf is for service account usage
-> This a very important file, I have kept only the 64bit conf in my edited file.
+> This is a very important file, I have kept only the 64bit conf in my edited file.
 
 ***original file:*** [odbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/original_file/odbc.ini)
 
 ***edited file:*** [odbc.ini](https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/edited_file/odbc.ini)
 
-you can use directly this file, and change what I have mentioned in the note section down below.
+you can use directly this edited file, and change what I have mentioned in the note section down below.
 In this file, you need to focus on editing these parameters:
 `Catalog=` : Add the Project ID (Your BigQuery Project ID)
 
@@ -161,29 +161,30 @@ Since you are going to use the service account, ensure or edit these parameters:
 	`Email=` : Add the email of your service account
 	`KeyFilePath=`: the path to your service account if you have changed its location.
 
-#### 3.3.4 changing the file:`/etc/simba/setup/odbc.ini` (For User Account Usage) *- Skip if you will use the Service account.*
+#### 3.3.4 changing the file:`/etc/simba/setup/odbc.ini` (For User Account Usage) *- Skip if you have used the Service account in 3.3.3*
 > This conf is for user account usage
 > The user account usage is not recomanded by google, becose the dev depend on your account.
 
  1. Open this link: [Google BigQuery Token](https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/bigquery&response_type=code&redirect_uri=urn:ietf:wg:oauth:2.0:oob&client_id=977385342095.apps.googleusercontent.com&hl=en&from_login=1&as=76356ac9e8ce640b&pli=1&authuser=0)
  2. Select your Google account
  3. Allow BigQuery to access your Google Account
-  <img src="https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/tmp/1.png?raw=true" width="300">
+   <img src="https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/tmp/1.png?raw=true" width="300">
   
  4. Scroll and copy the "Authorization code"
  <img src="https://github.com/OmarHamdaoui/BigQuery-Connector-ODBC/blob/main/tmp/2.png?raw=true" width="300">
- 5. Execute the script in your machine :
+ 5. Execute the script in your machine:
 	    sh /etc/simba/Tools/get_refresh_token.sh "token you have copied"
 	copy the result of the script without taking `refresh_token :`
- 6. open the: `/etc/simba/odbc.ini`
- 7. `#RefreshToken=`: uncomment this line and past your refresh_token
+ 6. Open the file: `/etc/simba/odbc.ini`
+    Since you are going to use the user account, ensure or edit these parameters:
+    `#RefreshToken=`: uncomment this line and past your refresh_token
 	`Email=` : comment this line
 	`KeyFilePath=` comment this line 	
 	`OAuthMechanism=1` ensure that it is equal to 1
 
 ### 3.4 Exporting the driver
 
-Switch the wanted user, and execute this command, that will set the variables to your environment profile.
+Switch the wanted user, and execute these commands, that will set the variables to your environment profile.
 
 	export ODBCINI=/etc/simba/setup/odbc.ini
 	export ODBCINSTINI=simba/setup/odbcinst.ini
@@ -219,7 +220,7 @@ We can see that our driver points on the right configuration.
 repeat the section 4.1 to get the Data source name, and connect using isql, like the command below:
 
 	isql 'Google BigQuery 64-bit'
-If everything went well the previous command will show the following message:
+If everything went well, the previous command will show the following message:
 
 	+---------------------------------------+
 	| Connected!                            |

@@ -4,8 +4,8 @@
 ### Requirements Installation on Ubuntu & Redhat
 >**Ubuntu**
 
-`sudo apt update`
-`sudo apt install unixodbc`
+	sudo apt update
+	sudo apt install unixodbc
 >**Redhat**
 
-				sudo yum install unixODBC.x86_64
+	sudo yum install unixODBC.x86_64
